@@ -1,0 +1,7 @@
+all:
+  children:
+    ubuntu:
+      hosts:
+        ec2-54-90-187-242.compute-1.amazonaws.com:
+      vars:
+        ansible_user: ubuntu

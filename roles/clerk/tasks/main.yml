@@ -1,0 +1,18 @@
+- name: Copy files
+  ansible.builtin.copy:
+    src: ./binaries
+    dest: "~/clerks"
+    mode: u+x,g+x,o+x
+
+- name: Set AMI name
+  shell: curl http://169.254.169.254/latest/meta-data/ami-id
+  register: aws_ami
+
+- name: Generate JSON file
+  shell: "./clerk-{{ ansible_system | lower }}-{{ ansible_architecture | lower }} {{ aws_ami.stdout }} pip yum rpm apt /opt"
+  args:
+    chdir: ~/clerks/binaries
+  register: stdout
+
+- debug:
+    msg: "{{ stdout.stdout }}"
